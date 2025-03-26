@@ -1,0 +1,59 @@
+.issue-card {
+    width: 95%;
+    background-color: white;
+    margin: 5px 0px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    position: relative;
+
+    .issue-number {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 10px;
+        font-size: 12px;
+    }
+
+    .issue-heading {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+        margin: 25px 0px 25px 10px;
+
+        a {
+            text-decoration: none;
+            color: black;
+            font-weight: 500;
+            font-size: 14px;
+            margin-left: 3px;
+            line-height: 15px;
+        }
+        
+        .heading-icon {
+            height: 16px;
+        }
+    }
+
+    .labels-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+
+        .label {
+            border-radius: 10px;
+            margin: 10px 0px 0px 10px;
+            font-size: 10px;
+            font-weight: 500;
+            padding: 2px 5px;
+            color: white;
+        }
+    }
+
+}

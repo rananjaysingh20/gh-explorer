@@ -1,0 +1,73 @@
+.nav-container {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+    
+    &.scrolled {
+        background-color: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    &.transparent {
+        background-color: transparent;
+    }
+
+    .container {
+        max-width: 1280px; // Adjust based on your design needs
+        margin-left: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-right: auto;
+        padding-left: 1rem;  // Equivalent to px-4 (16px)
+        padding-right: 1rem; // Equivalent to px-4 (16px)
+
+        .logo-container {
+            display: flex; 
+            align-items: center;
+            justify-content: space-between;
+            height: 4rem;
+
+            .logos {
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+                margin-left: 2rem;
+
+                .github-logo {
+                    width: 1.5rem; // 24px
+                    height: 1.5rem;
+                }
+
+                .logo-text {
+                    font-weight: 500; // Medium
+                    font-size: 1.25rem; // 20px
+                    line-height: 1.75rem; 
+                }
+            }
+        }
+
+        .explore-Btn {
+            background-color: black;
+            margin-top: 10px;
+            height: 40px;
+            .link-to-explore {
+                text-decoration: none;
+                color: white;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+
+                .code-logo {
+                    width: 1rem;
+                    height: 1rem;
+                }
+            }
+        }
+    }
+}

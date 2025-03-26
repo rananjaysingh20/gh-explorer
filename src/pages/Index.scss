@@ -1,0 +1,54 @@
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    width: 100%;
+    flex-direction: column;
+
+    .main-title {
+        font-weight: 400;
+        font-size: 4rem;
+    }
+
+    .subtitle {
+        font-size: 1.5rem;
+        color: gray;
+    }
+
+    .searchbar-container {
+        width: 40%;
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+
+        button {
+            background-color: black;
+            color: white;
+        }
+
+        .searchbar {
+            backdrop-filter: blur(10px);
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            min-height: 40px;
+            padding: 0px 10px;
+        }
+    }
+}
+
+.reults-section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    .results-container {
+        width: 70%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+}
