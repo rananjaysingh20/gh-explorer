@@ -7,42 +7,22 @@ import { useState } from "react";
 import RepoCard from "../components/RepoCard";
 
 export async function getUserProfile(username: string) {
-    const GITHUB_TOKEN = "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";
-    const response = await axios.get(`https://api.github.com/users/${username}`,{
-        headers: {
-            Authorization: `token ${GITHUB_TOKEN}`
-        }
-    });
+    const response = await axios.get(`https://api.github.com/users/${username}`);
     return response.data
 }
 
 export async function getUserRepositories(username: string, page = 1, per_page = 10, sort = "updated", direction = "desc") {
-    const GITHUB_TOKEN = "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";
-    const response = await axios.get(`https://api.github.com/users/${username}/repos?page=${page}&per_page=${per_page}&sort=${sort}&direction=${direction}`,{
-        headers: {
-            Authorization: `token ${GITHUB_TOKEN}`
-        }
-    });
+    const response = await axios.get(`https://api.github.com/users/${username}/repos?page=${page}&per_page=${per_page}&sort=${sort}&direction=${direction}`);
     return response.data
 }
 
 export async function getUserFollowers(username: string, page = 1, per_page = 10) {
-    const GITHUB_TOKEN = "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";
-    const response = await axios.get(`https://api.github.com/users/${username}/followers?page=${page}&per_page=${per_page}`,{
-        headers: {
-            Authorization: `token ${GITHUB_TOKEN}`
-        }
-    });
+    const response = await axios.get(`https://api.github.com/users/${username}/followers?page=${page}&per_page=${per_page}`);
     return response.data
 }
 
 export async function getUserEvents(username: string, page = 1, per_page = 10) {
-    const GITHUB_TOKEN = "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";
-    const response = await axios.get(`https://api.github.com/users/${username}/events?page=${page}&per_page=${per_page}`,{
-        headers: {
-            Authorization: `token ${GITHUB_TOKEN}`
-        }
-    });
+    const response = await axios.get(`https://api.github.com/users/${username}/events?page=${page}&per_page=${per_page}`);
     return response.data
 }
 

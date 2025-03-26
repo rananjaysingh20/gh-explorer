@@ -12,8 +12,8 @@ const RepoCard = ({item} : RepoCardProps) => {
             <div className="repo-info-container">
                 <div className="repo-title">{item.name}</div>
                 <div className="repo-subtitle">{item.owner.login}</div>
-                <div className="description">{item?.description?.length > 250 ? item.description.slice(0, 250) + '...' : item.description}</div>
-                <div className="topics">{item.topics.slice(0,5).map((topic) => {return <span className="topic">{topic}</span>})}</div>
+                <div className="description">{item?.description?.length > 50 ? item.description.slice(0, 50) + '...' : item.description}</div>
+                <div className="topics">{item.topics.slice(0,4).map((topic) => {return <span className="topic">{topic}</span>})}</div>
                 {item.language !== null && <span className="repo-language">{item.language}</span>}
             </div>
             <div className="repo-stats-container">

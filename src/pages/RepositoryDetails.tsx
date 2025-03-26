@@ -1,38 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Calendar, ChevronLeft, Clock, GitFork, Star } from "lucide-react";
-import { Link, Links, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "./RepositoryDetails.scss";
 import { useState } from "react";
 
 
 const getRepository = async (owner:string, repo:string) => {
-    const GITHUB_TOKEN = "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";
-    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}`,{
-        headers: {
-            Authorization: `token ${GITHUB_TOKEN}`
-        }
-    });
+    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}`);
     return response.data
 }
 
 const getRepositoryLanguages = async (owner:string, repo:string) => {
-    const GITHUB_TOKEN = "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";
-    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/languages`,{
-        headers: {
-            Authorization: `token ${GITHUB_TOKEN}`
-        }
-    });
+    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/languages`);
     return response.data
 }
 
 const getRepositoryContributors = async (owner:string, repo:string, page=1, per_page=10) => {
-    const GITHUB_TOKEN = "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";
-    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/contributors?page=${page}&per_page=${per_page}`,{
-        headers: {
-            Authorization: `token ${GITHUB_TOKEN}`
-        }
-    });
+    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/contributors?page=${page}&per_page=${per_page}`);
     return response.data
 }
 

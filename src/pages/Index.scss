@@ -50,5 +50,62 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
+
+        .filters-section {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 10px;
+
+            .repo-count {
+                font-size: 12px;
+                color: gray;
+                font-weight: 600;
+            }
+
+            .filter {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                gap: 5px;
+                font-size: 14px;
+
+                .filter-icon {
+                    height: 14px;
+                }
+
+                .dropdown {
+                    border-radius: 5px;
+                    border: 1px solid #ccc;
+                }
+            }
+        }
+    }
+}
+
+.page-number-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0px;
+
+    .prev-btn, .next-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+
+        .icon {
+            height: 18px;
+        }
+    }
+
+    .pages {
+        .active {
+            background-color: black;
+            color: white;
+        }
     }
 }

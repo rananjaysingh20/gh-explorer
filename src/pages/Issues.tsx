@@ -7,22 +7,12 @@ import { act, useState } from "react";
 import IssuesCard from "../components/IssuesCard";
 
 const getRepository = async (owner:string, repo:string) => {
-    const GITHUB_TOKEN = "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";
-    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}`,{
-        headers: {
-            Authorization: `token ${GITHUB_TOKEN}`
-        }
-    });
+    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}`);
     return response.data
 }
 
 const getRepositoryIssues = async (owner:string, repo:string, state = "all", page = 1, per_page = 100, sort = "created", direction = "desc") => {
-    const GITHUB_TOKEN = "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";
-    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/issues?state=${state}&page=${page}&per_page=${per_page}&sort=${sort}&direction=${direction}`,{
-        headers: {
-            Authorization: `token ${GITHUB_TOKEN}`
-        }
-    });
+    const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/issues?state=${state}&page=${page}&per_page=${per_page}&sort=${sort}&direction=${direction}`);
     return response.data
 }
 
