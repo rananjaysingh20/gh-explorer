@@ -57,7 +57,7 @@ const Index = () => {
                 <div className="main-title">Github Repo Explorer</div>
                 <div className="subtitle">Search for repos, and explore info about them</div>
                 <div className="searchbar-container">
-                    <input className="searchbar" onChange={(e) => {setSearchTerm(e.target.value); setPage(1)}} type="text" placeholder="search for repository name" />
+                    <input className="searchbar" onChange={(e) => {setSearchTerm(e.target.value); setPage(1); setSort("stars")}} type="text" placeholder="search for repository name" />
                     <button onClick={() => refetch()}>Search</button>
                 </div>
             </div>
