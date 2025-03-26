@@ -3,8 +3,24 @@ import { Link, useParams } from "react-router-dom";
 import "./Issues.scss";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { act, useState } from "react";
+import { useState } from "react";
 import IssuesCard from "../components/IssuesCard";
+
+interface Issue {
+    id: number;
+    title: string;
+    state: "open" | "closed";
+    user: { login: string };
+    created_at: string;
+    comments: number;
+    url: string;
+    labels: Label[];
+}
+
+interface Label {
+    name: string;
+    color: string;
+}
 
 const getRepository = async (owner:string, repo:string) => {
     const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}`);
@@ -19,16 +35,16 @@ const getRepositoryIssues = async (owner:string, repo:string, state = "all", pag
 const Issues = () => {
     const [activeTab, setActiveTab] = useState('kanban');
     const { owner, repo } = useParams<{ owner: string; repo: string }>();
-    const [sortBy, setSortBy] = useState("updated");
-    const [sortDirection, setSortDirection] = useState("desc");
-    const { data: repoData, isLoading: repoLoading } = useQuery({
+    const [sortBy] = useState("updated");
+    const [sortDirection] = useState("desc");
+    const { data: repoData } = useQuery({
         queryKey: ["repository", owner, repo],
         queryFn: () => getRepository(owner!, repo!),
         enabled: !!owner && !!repo,
       });
     
       // Fetch repository issues
-      const { data: issuesData, isLoading: issuesLoading } = useQuery({
+      const { data: issuesData } = useQuery({
         queryKey: ["repository-issues", owner, repo, sortBy, sortDirection],
         queryFn: () => getRepositoryIssues(owner!, repo!, "all", 1, 100, sortBy, sortDirection),
         enabled: !!owner && !!repo,
@@ -55,11 +71,9 @@ const Issues = () => {
                                 <h3>Open</h3>
                             </div>
                             <div className="column">
-                                {issuesData.filter(issue => issue.state === 'open').map((issuesData, index) => {
-                                    return (
-                                        <IssuesCard issue={issuesData} index={index} />
-                                    )
-                                })}
+                                {issuesData?.filter((issue: Issue) => issue.state === 'open').map((issue: Issue, index: number) => (
+                                    <IssuesCard key={index} issue={issue} index={index} />
+                                ))}
                             </div>
                         </div>
                         <div className="issues-column">
@@ -68,21 +82,17 @@ const Issues = () => {
                                 <h3>Closed</h3>
                             </div>
                             <div className="column">
-                            {issuesData.filter(issue => issue.state === 'closed').map((issuesData, index) => {
-                                    return (
-                                        <IssuesCard issue={issuesData} index={index} />
-                                    )
-                                })}
+                                {issuesData?.filter((issue: Issue) => issue.state === 'closed').map((issue: Issue, index: number) => (
+                                    <IssuesCard key={index} issue={issue} index={index} />
+                                ))}
                             </div>
                         </div>
                     </>}
                     {activeTab === 'list' && <>
                         <div className="list-column">
-                            {issuesData.map((issuesData, index) => {
-                                return (
-                                    <IssuesCard issue={issuesData} index={index} />
-                                )
-                            })}
+                            {issuesData?.map((issue: Issue, index: number) => (
+                                <IssuesCard key={index} issue={issue} index={index} />
+                            ))}
                         </div>
                     </>}
                 </div>}

@@ -26,12 +26,43 @@ export async function getUserEvents(username: string, page = 1, per_page = 10) {
     return response.data
 }
 
+interface Repo {
+    id: number;
+    name: string;
+    owner: Owner;
+    description?: string;
+    topics: string[];
+    language: string | null;
+    watchers: number;
+    forks: number;
+    updated_at: string;
+}
+
+interface Owner {
+    login: string;
+}
+
+interface Follower {
+    id: number;
+    login: string;
+    avatar_url: string;
+}
+
+interface Event {
+    id: string;
+    type: string;
+    payload: {
+        commits?: { message: string; author: { name: string } }[];
+    };
+    created_at: string;
+}
+
 const UserProfile = () => {
     const { username } = useParams<{ username: string }>();
-    const [page, setPage] = useState(1);
+    const [page] = useState(1);
     const [activeTab, setActiveTab] = useState("repos");
 
-    const { data: userData, isLoading: userLoading, isError: userError } = useQuery({
+    const { data: userData } = useQuery({
         queryKey: ["user", username],
         queryFn: () => getUserProfile(username!),
         enabled: !!username,
@@ -39,21 +70,21 @@ const UserProfile = () => {
     console.log(userData)
 
     // Fetch user repositories
-    const { data: reposData, isLoading: reposLoading } = useQuery({
+    const { data: reposData } = useQuery({
         queryKey: ["user-repositories", username, page],
         queryFn: () => getUserRepositories(username!, page, 10, "updated"),
         enabled: !!username,
     });
 
     // Fetch user followers
-    const { data: followersData, isLoading: followersLoading } = useQuery({
+    const { data: followersData } = useQuery({
         queryKey: ["user-followers", username],
         queryFn: () => getUserFollowers(username!, 1, 20),
         enabled: !!username && activeTab === "followers",
     });
 
     // Fetch user events (for commits)
-    const { data: eventsData, isLoading: eventsLoading } = useQuery({
+    const { data: eventsData } = useQuery({
         queryKey: ["user-events", username],
         queryFn: () => getUserEvents(username!, 1, 30),
         enabled: !!username && activeTab === "activity",
@@ -93,14 +124,14 @@ const UserProfile = () => {
                         <button className={`tab-btn ${activeTab === "activity" ? "active" : ""}`} onClick={() => setActiveTab('activity')}>Recent Activity</button>
                     </div>
                     {reposData && activeTab === 'repos' && <div>
-                        {reposData.map((repo, index) => {
-                            return <RepoCard item={repo} />
+                        {reposData.map((repo: Repo) => {
+                            return <RepoCard key={repo.id} item={repo} />
                         })}
                     </div>}
                     {followersData && activeTab === 'followers' && <div className="follower-list">
-                        {followersData.map((follower, index) => {
+                        {followersData.map((follower: Follower) => {
                             return (
-                                <div className="follower" key={index}>
+                                <div className="follower" key={follower.id}>
                                     <img className="follower-image" src={follower.avatar_url} alt="follower"/>
                                     <div className="follower-name">{follower.login}</div>
                                 </div>
@@ -108,18 +139,18 @@ const UserProfile = () => {
                         })}
                     </div>}
                     {eventsData && activeTab === 'activity' && <div className="event-list">
-                        {eventsData.filter(event => event.type === 'PushEvent').map((event, index) => {
+                        {eventsData.filter((event: Event) => event.type === 'PushEvent').map((event: Event) => {
                             return (
-                                <div className="event" key={index}>
-                                    <div className="event-message"><GitPullRequest className="event-icon" />{event.payload.commits[0].message}</div>
+                                <div className="event" key={event.id}>
+                                    <div className="event-message"><GitPullRequest className="event-icon" />{event.payload.commits?.[0].message}</div>
                                     <div className="event-author">
-                                        {event.payload.commits[0].author.name}
+                                        {event.payload.commits?.[0].author.name}
                                         {event.created_at}
                                     </div>
                                 </div>
                             )
                         })}
-                        {!eventsData.filter(event => event.type === 'PushEvent').length ? (<div>No recent activity</div>) : ""}
+                        {!eventsData.filter((event: Event) => event.type === 'PushEvent').length ? (<div>No recent activity</div>) : ""}
                     </div>}
                 </div>}
             </div>

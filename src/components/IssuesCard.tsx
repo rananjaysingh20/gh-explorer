@@ -2,9 +2,22 @@ import { CircleCheck, Info } from "lucide-react";
 import "./IssuesCard.scss"
 
 interface IssuesCardProps {
-    issue: object;
+    issue: Issue;
     index: number;
 }
+interface Label {
+    name: string;
+    color: string;
+}
+
+interface Issue {
+    url: string;
+    state: string;
+    title: string;
+    pull_request?: { html_url: string };
+    labels: Label[];
+}
+
 const IssuesCard = ({issue: issueData, index: index}: IssuesCardProps) => {
     return (
         <div key={index} className="issue-card">

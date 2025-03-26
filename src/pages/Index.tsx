@@ -10,12 +10,23 @@ const fetchSearchResults = async (search: string, page: number, sort: string) =>
     return response.data
 }
 
+interface Repo {
+    name: string;
+    owner: { login: string };
+    description?: string;
+    topics: string[];
+    language: string | null;
+    watchers: number;
+    forks: number;
+    updated_at: string;
+}
+
 const Index = () => {
     const [page, setPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState("");
     const [sort, setSort] = useState("stars")
-    const [perPage, setPerPage] = useState(10);
-    const { data, isLoading, error, refetch } = useQuery({
+    const [perPage] = useState(10);
+    const { data, refetch } = useQuery({
         queryKey: ["repos", searchTerm],
         queryFn: () => fetchSearchResults(searchTerm, page, sort),
         enabled: false, // Prevents auto-fetching until refetch is called
@@ -30,7 +41,7 @@ const Index = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    const handleFilterChange = (e) => {
+    const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSort(e.target.value.toLowerCase());
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -64,11 +75,9 @@ const Index = () => {
                             </select>
                         </div>
                     </div>}
-                    {data?.items?.map((item) => {
-                        return (
-                            <RepoCard item={item} />
-                        )
-                    })}
+                    {data?.items?.map((item: Repo) => (
+                        <RepoCard key={item.name} item={item} />
+                    ))}
                 </div>
             </div>
             {totalPages > 1 && (

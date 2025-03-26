@@ -5,6 +5,10 @@ import { Link, useParams } from "react-router-dom";
 import "./RepositoryDetails.scss";
 import { useState } from "react";
 
+interface Contributor {
+    login: string;
+    avatar_url: string;
+}
 
 const getRepository = async (owner:string, repo:string) => {
     const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}`);
@@ -24,19 +28,19 @@ const getRepositoryContributors = async (owner:string, repo:string, page=1, per_
 const RepositoryDetails = () => {
     const [activeTab, setActiveTab] = useState("overview");
     const { owner, repo } = useParams<{ owner: string; repo: string }>();
-    const { data: repoData, isLoading: repoLoading, isError: repoError } = useQuery({
+    const { data: repoData } = useQuery({
         queryKey: ["repository", owner, repo],
         queryFn: () => getRepository(owner!, repo!),
         enabled: !!owner && !!repo,
     });
 
-    const { data: langData, isLoading: langLoading } = useQuery({
+    const { data: langData } = useQuery({
         queryKey: ["repository-languages", owner, repo],
         queryFn: () => getRepositoryLanguages(owner!, repo!),
         enabled: !!owner && !!repo,
     });
 
-    const { data: contributorsData, isLoading: contributorsLoading } = useQuery({
+    const { data: contributorsData } = useQuery({
         queryKey: ["repository-contributors", owner, repo],
         queryFn: () => getRepositoryContributors(owner!, repo!, 1, 10),
         enabled: !!owner && !!repo,
@@ -91,16 +95,16 @@ const RepositoryDetails = () => {
                         <div className="info-container">
                             <h3>Top Languages</h3>
                             {langData && Object.entries(langData).slice(0,4).map(([language, size]) => {
-                                const total = Object.values(langData).reduce((sum, size) => sum + size, 0);
+                                const total = Object.values(langData).reduce((sum, size) => (sum as number) + (size as number), 0);
                                 return (
                                     <>
                                         <div className="language-info" key={language}>
                                             <div>{language}</div>
-                                            <div>{((size/total)*100).toFixed(2)}%</div>
+                                            <div>{(((size as number)/(total as number))*100).toFixed(2)}%</div>
                                         </div>
                                         <div className="precentage-bar">
                                             <div style={{ 
-                                                width: `${((size/total)*100).toFixed(2)}%`,
+                                                width: `${(((size as number)/(total as number))*100).toFixed(2)}%`,
                                                 backgroundColor: 'black',
                                                 height: '10px',
                                                 borderRadius: '10px'
@@ -116,11 +120,11 @@ const RepositoryDetails = () => {
                         <h3>Language Distribution</h3>
                         <div className="language-bar">
                             {Object.values(langData).map((size, index) => {
-                                const total = Object.values(langData).reduce((sum, size) => sum + size, 0);
+                                const total = Object.values(langData).reduce((sum, size) => (sum as number) + (size as number), 0);
                                 const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A8"];
                                 const barColor = colors[index % colors.length];
                                 return <span style={{
-                                    width: `${Math.ceil((size/total)*100).toFixed(2)}%`,
+                                    width: `${Math.ceil((size as number) / (total as number) * 100).toFixed(2)}%`,
                                     backgroundColor: barColor,
                                     height: '40px'
                                 }}></span>
@@ -144,7 +148,7 @@ const RepositoryDetails = () => {
                     {activeTab === 'contributors' && <div className="repo-info">
                         <h3>Top Contributors</h3>
                         <div className="contributors">
-                            {contributorsData.map((contibutor) => {
+                            {contributorsData.map((contibutor: Contributor) => {
                                 return (
                                     <div className="contributor">
                                         <img className="contributor-image" src={contibutor.avatar_url} alt="avatar_url" />
